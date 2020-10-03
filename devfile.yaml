@@ -1,0 +1,43 @@
+apiVersion: 1.0.0
+metadata:
+  name: frontend-
+projects:
+  - name: quotegen-frontend
+    source:
+      location: 'https://github.com/snowjet/quotegen-frontend.git'
+      type: git
+      branch: master
+components:
+  - id: ms-python/python/latest
+    memoryLimit: 512Mi
+    preferences:
+      python.globalModuleInstallation: true
+    type: chePlugin
+  - mountSources: true
+    endpoints:
+      - name: web
+        port: 8080
+        attributes:
+          protocol: http
+          public: 'true'
+          discoverable: 'false'
+    memoryLimit: 512Mi
+    type: dockerimage
+    alias: python
+    image: 'quay.io/eclipse/che-python-3.7:nightly'
+commands:
+  - name: setup deps
+    actions:
+      - type: exec
+        component: python
+        command: pip install --user -r requirements.txt
+        workdir: "${CHE_PROJECTS_ROOT}/quotegen-frontend/frontend"
+  - name: run-debug
+    actions:
+      - type: exec
+        component: python
+        command: >-
+          export LOG_LEVEL="DEBUG" && 
+          python app.py
+        workdir: "${CHE_PROJECTS_ROOT}/quotegen-frontend/frontend"      
+
