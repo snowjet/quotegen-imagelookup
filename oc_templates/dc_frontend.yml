@@ -33,7 +33,6 @@ spec:
           - imagelookup
         from:
           kind: ImageStreamTag
-          namespace: quote-pipeline
           name: 'imagelookup:latest'
     - type: ConfigChange
   replicas: 1
