@@ -4,9 +4,9 @@ ENV PORT 8080
 EXPOSE 8080
 WORKDIR /usr/src/app
 
-COPY frontend /usr/src/app/frontend
+COPY imagelookup /usr/src/app/imagelookup
 
-WORKDIR /usr/src/app/frontend
+WORKDIR /usr/src/app/imagelookup
 RUN pip install -U pip wheel && \
     pip install --no-cache-dir -r requirements.txt
 
