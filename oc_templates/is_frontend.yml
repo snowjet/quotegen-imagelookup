@@ -15,5 +15,3 @@ spec:
   lookupPolicy:
     local: false
   dockerImageRepository: quay.io/rnagalin/quotegen-imagelookup
-  tags:
-    - name: latest
