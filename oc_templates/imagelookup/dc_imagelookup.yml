@@ -55,6 +55,9 @@ spec:
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: cfgmap-imagelookup              
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
