@@ -18,22 +18,30 @@ templates = Jinja2Templates(directory="templates")
 
 @router.get("", response_class=JSONResponse)
 async def get_image_by_name(request: Request, author: str = None):
-    logger.info("Author Image Requested: " + author)
-    image = crudImage.get_image_as_base64(name=author)
-    return {"image": image}
+    logger.info("Author Image Requested: " + str(author))
+    try:
+        image = crudImage.get_image_as_base64(name=author)
+        return {"image": image}
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Author not found")
 
 
 @router.get("/", response_class=JSONResponse)
 async def get_image_by_name(request: Request, author: str = None):
-    logger.info("Author Image Requested: " + author)
-    image = crudImage.get_image_as_base64(name=author)
-    return {"image": image}
+    try:
+        image = crudImage.get_image_as_base64(name=author)
+        return {"image": image}
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Author not found")
 
 
 @router.get("/html/{author}", response_class=HTMLResponse)
 async def get_image_by_name_html(request: Request, author: str = None):
     logger.info("Author Image Requested: " + author)
-    image = crudImage.get_image_as_base64(name=author)
-    return templates.TemplateResponse(
+    try:
+        image = crudImage.get_image_as_base64(name=author)
+        return templates.TemplateResponse(
         "index.html", {"request": request, "image": image}
     )
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Author not found")

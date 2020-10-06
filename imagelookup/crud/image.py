@@ -33,5 +33,5 @@ def get_image_as_base64(name: str = None):
             logger.error("Imagepath not image", Imagepath=str(image_path))
             raise ValueError
     else:
-        logger.error("Nnvlid name provided", name=name)
+        logger.error("Invlid name provided: " +  str(name))
         raise ValueError
