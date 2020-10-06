@@ -18,22 +18,30 @@ templates = Jinja2Templates(directory="templates")
 
 @router.get("", response_class=JSONResponse)
 async def get_image_by_name(request: Request, name: str = None):
-    print(name)
-    image = crudImage.get_image_as_base64(name=name)
-    return {"image": image}
+    logger.info("name Image Requested: " + str(name))
+    try:
+        image = crudImage.get_image_as_base64(name=name)
+        return {"image": image}
+    except ValueError:
+        raise HTTPException(status_code=404, detail="name not found")
 
 
 @router.get("/", response_class=JSONResponse)
 async def get_image_by_name(request: Request, name: str = None):
-    print(name)
-    image = crudImage.get_image_as_base64(name=name)
-    return {"image": image}
+    try:
+        image = crudImage.get_image_as_base64(name=name)
+        return {"image": image}
+    except ValueError:
+        raise HTTPException(status_code=404, detail="name not found")
 
 
 @router.get("/html/{name}", response_class=HTMLResponse)
 async def get_image_by_name_html(request: Request, name: str = None):
-    print(name)
-    image = crudImage.get_image_as_base64(name=name)
-    return templates.TemplateResponse(
+    logger.info("name Image Requested: " + name)
+    try:
+        image = crudImage.get_image_as_base64(name=name)
+        return templates.TemplateResponse(
         "index.html", {"request": request, "image": image}
     )
+    except ValueError:
+        raise HTTPException(status_code=404, detail="name not found")
