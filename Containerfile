@@ -5,7 +5,7 @@ EXPOSE 8080
 WORKDIR /usr/src/app
 
 USER 0 
-RUN microdnf install python38 \
+RUN microdnf install python38 python38-pip \
     && microdnf clean all
     
 COPY imagelookup /usr/src/app/imagelookup
