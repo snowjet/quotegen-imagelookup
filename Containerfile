@@ -4,16 +4,21 @@ ENV PORT 8080
 EXPOSE 8080
 WORKDIR /usr/src/app
 
-USER 0 
-RUN microdnf install python38 \
+USER 0
+RUN microdnf install python38 python3-virtualenv \
     && microdnf clean all
-    
-COPY imagelookup /usr/src/app/imagelookup
-RUN chown -R 1001:0 /usr/src/app/imagelookup
 
+ENV VIRTUAL_ENV=/opt/venv
+RUN python3 -m virtualenv --python=/usr/bin/python3 $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+COPY imagelookup /usr/src/app/imagelookup
+RUN chown -R 1001:0 ${VIRTUAL_ENV} && \
+    chown -R 1001:0 /usr/src/app/imagelookup
+
+USER 1001
 WORKDIR /usr/src/app/imagelookup
 RUN pip3 install -U pip wheel && \
     pip3 install --no-cache-dir -r requirements.txt
 
-USER 1001
 CMD [ "python", "app.py"]
