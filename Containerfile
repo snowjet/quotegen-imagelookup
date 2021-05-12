@@ -5,7 +5,7 @@ EXPOSE 8080
 WORKDIR /usr/src/app
 
 USER 0 
-RUN microdnf install python38 python38-pip \
+RUN microdnf install python38 \
     && microdnf clean all
     
 COPY imagelookup /usr/src/app/imagelookup
@@ -13,7 +13,7 @@ RUN chown -R 1001:0 /usr/src/app/imagelookup
 USER 1001
 
 WORKDIR /usr/src/app/imagelookup
-RUN pip install -U pip wheel && \
-    pip install --no-cache-dir -r requirements.txt
+RUN pip3 install -U pip3 wheel && \
+    pip3 install --no-cache-dir -r requirements.txt
 
 CMD [ "python", "app.py"]
