@@ -1,11 +1,13 @@
-FROM registry.access.redhat.com/ubi8/python-38
+FROM registry.access.redhat.com/ubi8/ubi-minimal
 
 ENV PORT 8080
 EXPOSE 8080
 WORKDIR /usr/src/app
 
 USER 0 
-RUN yum remove npm -y
+RUN microdnf install python38 \
+    && microdnf clean all
+    
 COPY imagelookup /usr/src/app/imagelookup
 RUN chown -R 1001:0 /usr/src/app/imagelookup
 USER 1001
